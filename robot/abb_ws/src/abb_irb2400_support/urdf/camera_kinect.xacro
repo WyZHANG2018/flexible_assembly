@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+
+<robot name="camera_kinect" xmlns:xacro="http://ros.org/wiki/xacro">
+	<xacro:include filename="$(find abb_irb2400_support)/urdf/camera_kinect_macro.xacro"/>
+	<xacro:camera_kinect prefix=""/>
+</robot>

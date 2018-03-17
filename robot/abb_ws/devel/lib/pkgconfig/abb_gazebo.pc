@@ -1,0 +1,8 @@
+prefix=/home/weiyizhang/grasp/robot/abb_ws/devel
+
+Name: abb_gazebo
+Description: Description of abb_gazebo
+Version: 0.1.0
+Cflags: -I/usr/include/eigen3
+Libs: -L/home/weiyizhang/grasp/robot/abb_ws/devel/lib -labb_gazebo
+Requires: roscpp gazebo_ros gazebo_msgs gazebo_dev gazebo_plugins gazebo_ros_control moveit_core moveit_ros_planning_interface interactive_markers geometry_msgs sensor_msgs cv_bridge roscpp gazebo_ros

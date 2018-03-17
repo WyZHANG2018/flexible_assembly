@@ -1,0 +1,359 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+<xacro:include filename="$(find abb_resources)/urdf/common_materials.xacro"/>
+<xacro:macro name="abb_irb2400" params="prefix">
+<!-- Constants for robot dimensions -->
+<xacro:property name="PI" value="3.1415926535897931"/>
+<xacro:property name="mass" value="1" /> <!-- arbitrary value for mass -->
+<xacro:property name="width" value="0.1" /> <!-- Square dimensions (widthxwidth) of beams -->
+<xacro:property name="height1" value="2" /> <!-- Link 1 -->
+<xacro:property name="height2" value="1" /> <!-- Link 2 -->
+<xacro:property name="height3" value="1" /> <!-- Link 3 -->
+<xacro:property name="camera_link" value="0.05" /> <!-- Size of square 'camera' box -->
+<xacro:property name="axel_offset" value="0.05" /> <!-- Space btw top of beam and the each joint -->
+
+<!-- Import all Gazebo-customization elements, including Gazebo colors -->
+<xacro:include filename="$(find abb_irb2400_support)/urdf/abb.gazebo" />
+<!-- Import Rviz colors -->
+<xacro:include filename="$(find abb_irb2400_support)/urdf/materials.xacro" />
+<!-- the robotiq gripper-->
+<xacro:include filename="$(find robotiq_85_description)/urdf/robotiq_85_gripper.urdf.xacro" />
+
+<link name="world"/>
+
+<joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+</joint>
+
+    <!-- link list -->
+    <link name="base_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://abb_irb2400_support/meshes/irb2400/visual/base_link.dae"/>
+            </geometry>
+            <xacro:material_abb_orange />
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://abb_irb2400_support/meshes/irb2400/collision/base_link.stl"/>
+            </geometry>
+            <xacro:material_abb_yellow />
+        </collision>
+        <inertial>
+         <mass value="10"/>
+         <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+       </inertial>
+    </link>
+    <link name="link_1">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://abb_irb2400_support/meshes/irb2400/visual/link_1.dae"/>
+            </geometry>
+            <xacro:material_abb_orange />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://abb_irb2400_support/meshes/irb2400/collision/link_1.stl"/>
+            </geometry>
+            <xacro:material_abb_yellow />
+        </collision>
+        <inertial>
+         <mass value="10"/>
+         <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+       </inertial>
+    </link>
+    <link name="link_2">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://abb_irb2400_support/meshes/irb2400/visual/link_2.dae"/>
+            </geometry>
+            <xacro:material_abb_orange />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://abb_irb2400_support/meshes/irb2400/collision/link_2_whole.stl"/>
+            </geometry>
+            <xacro:material_abb_yellow />
+        </collision>
+        <inertial>
+         <mass value="10"/>
+         <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+       </inertial>
+    </link>
+    <link name="link_3">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://abb_irb2400_support/meshes/irb2400/visual/link_3.dae"/>
+            </geometry>
+            <xacro:material_abb_orange />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://abb_irb2400_support/meshes/irb2400/collision/link_3.stl"/>
+            </geometry>
+            <xacro:material_abb_yellow />
+        </collision>
+        <inertial>
+         <mass value="10"/>
+         <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+       </inertial>
+    </link>
+    <link name="link_4">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://abb_irb2400_support/meshes/irb2400/visual/link_4.dae"/>
+            </geometry>
+            <xacro:material_abb_orange />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://abb_irb2400_support/meshes/irb2400/collision/link_4.stl"/>
+            </geometry>
+            <xacro:material_abb_yellow />
+        </collision>
+        <inertial>
+         <mass value="10"/>
+         <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+       </inertial>
+    </link>
+    <link name="link_5">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://abb_irb2400_support/meshes/irb2400/visual/link_5.dae"/>
+            </geometry>
+            <xacro:material_abb_orange />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://abb_irb2400_support/meshes/irb2400/collision/link_5.stl"/>
+            </geometry>
+            <xacro:material_abb_yellow />
+        </collision>
+        <inertial>
+         <mass value="10"/>
+         <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+       </inertial>
+    </link>
+    <link name="link_6">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://abb_irb2400_support/meshes/irb2400/visual/link_6.dae"/>
+            </geometry>
+            <xacro:material_abb_black />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://abb_irb2400_support/meshes/irb2400/collision/link_6.stl"/>
+            </geometry>
+            <xacro:material_abb_yellow />
+        </collision>
+        <inertial>
+         <mass value="10"/>
+         <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+       </inertial>
+    </link>
+    <!--<link name="tool0"/>-->
+    <link name="gripper_root_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.1 0.1 0.05"/>
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.1 0.1 0.05"/>
+            </geometry>
+            <xacro:material_abb_yellow />
+        </collision>
+        <inertial>
+            <mass value="1e2" />
+            <origin xyz="0.0 0.0 0.0" />
+            <inertia ixx = "0.000001" ixy = "0.000000" ixz = "0.000000"
+                     iyx = "0.000000" iyy = "0.000001" iyz = "0.000000"
+                     izx = "0.000000" izy = "0.000000" izz = "0.000001" />
+        </inertial>
+    </link>
+    <gazebo reference="gripper_root_link">
+       <material>Gazebo/Black</material>
+    </gazebo>
+
+
+    <!-- Camera -->
+<!--
+   <link name="camera_link">
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="${camera_link} ${camera_link} ${camera_link}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="${camera_link} ${camera_link} ${camera_link}"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+   </link>
+-->
+
+
+
+
+  <link name="nut_body">
+    <inertial>
+      <mass value="1.0" />
+      <!-- center of mass (com) is defined w.r.t. link local coordinate system -->
+      <origin xyz="0.25 -0.5 0" />
+      <inertia  ixx="1.0" ixy="0.0"  ixz="0.0"  iyy="1.0"  iyz="0.0"  izz="1.0" />
+    </inertial>
+    <visual>
+      <!-- visual origin is defined w.r.t. link local coordinate system -->
+      <origin xyz="0 0 0" rpy="3.1416 0 0" />
+      <geometry>
+        <mesh filename="/home/weiyizhang/grasp/robot/abb_ws/src/abb_gazebo/worlds/media/nut.stl" scale="0.0005 0.0005 0.0005"/>
+      </geometry>
+    </visual>
+    <collision>
+      <!-- collision origin is defined w.r.t. link local coordinate system -->
+      <origin xyz="0 0 0" rpy="3.1416 0 0" />
+      <geometry>
+        <mesh filename="/home/weiyizhang/grasp/robot/abb_ws/src/abb_gazebo/worlds/media/nut.stl" scale="0.0005 0.0005 0.0005"/>
+      </geometry>
+    </collision>
+  </link>	
+     
+    <!-- end of link list -->
+
+
+
+
+
+    <!-- joint list -->
+
+    <joint name="nut_joint" type="fixed">
+        <origin xyz="0.94 0 1.35" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="nut_body"/>
+    </joint>
+
+
+    <joint name="${prefix}joint_1" type="revolute">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="link_1"/>
+        <axis xyz="0 0 1"/>
+        <limit lower="0" upper="0" effort="0" velocity="0"/>
+    </joint>
+    <joint name="${prefix}joint_2" type="revolute">
+        <origin xyz="0.1 0 0.615" rpy="0 0 0"/>
+        <parent link="link_1"/>
+        <child link="link_2"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="0" upper="0" effort="0" velocity="0"/>
+    </joint>
+    <joint name="${prefix}joint_3" type="revolute">
+        <origin xyz="0 0 0.705" rpy="0 0 0"/>
+        <parent link="link_2"/>
+        <child link="link_3"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="0" upper="0" effort="0" velocity="0"/>
+    </joint>
+    <joint name="${prefix}joint_4" type="revolute">
+        <origin xyz="0.258 0 0.135" rpy="0 0 0"/>
+        <parent link="link_3"/>
+        <child link="link_4"/>
+        <axis xyz="1 0 0"/>
+        <limit lower="0" upper="0" effort="0" velocity="0"/>
+    </joint>
+    <joint name="${prefix}joint_5" type="revolute">
+        <origin xyz="0.497 0 0" rpy="0 0 0"/>
+        <parent link="link_4"/>
+        <child link="link_5"/>
+        <axis xyz="0 1 0"/>
+        <limit lower="0" upper="0" effort="0" velocity="0"/>
+    </joint>
+    <joint name="${prefix}joint_6" type="revolute">
+        <origin xyz="0.085 0 0" rpy="0 0 0"/>
+        <parent link="link_5"/>
+        <child link="link_6"/>
+        <axis xyz="1 0 0"/>
+        <limit lower="0" upper="0" effort="0" velocity="0"/>
+    </joint>
+    <joint name="${prefix}joint_6_gripper_root_link" type="revolute">
+        <parent link="link_6"/>
+        <child link="gripper_root_link"/>
+        <origin xyz="0 0 0" rpy="0 1.57079632679 0"/>
+        <limit lower="0" upper="0" effort="0" velocity="0"/>
+    </joint>
+    <!-- end of joint list -->
+
+    <joint name="kinect_joint" type="fixed">
+        <origin xyz="1.0 0.0 1.35" rpy="0.0 0.0 3.14159265359"/>
+        <parent link="world"/>
+        <child link="kinect_link"/>
+    </joint>
+
+
+
+   <link name="kinect_link">
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="${camera_link} ${camera_link} ${camera_link}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="${camera_link} ${camera_link} ${camera_link}"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+   </link>
+
+
+
+    <!-- gripper description-->
+    <xacro:robotiq_85_gripper prefix="" parent="gripper_root_link" >
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:robotiq_85_gripper>
+</xacro:macro>
+
+<gazebo>
+  <plugin name="GraspTest" filename="libabb_gazebo.so"/>
+</gazebo>
+</robot>

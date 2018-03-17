@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: abb_irb2400_support
+    relative_path: urdf/irb2400.xacro
+  SRDF:
+    relative_path: config/abb_irb2400.srdf
+  CONFIG:
+    author_name: weiyizhang
+    author_email: weiyi.zhang222@gmail.com
+    generated_timestamp: 1516392953

@@ -1,0 +1,8 @@
+prefix=/home/weiyizhang/grasp/robot/abb_ws/devel
+
+Name: abb_motion_test
+Description: Description of abb_motion_test
+Version: 0.1.0
+Cflags: -I/usr/include/eigen3
+Libs: -L/home/weiyizhang/grasp/robot/abb_ws/devel/lib 
+Requires: moveit_core moveit_ros_planning_interface interactive_markers

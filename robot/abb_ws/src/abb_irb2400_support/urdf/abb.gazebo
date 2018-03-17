@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<robot>
+
+  <gazebo reference="link_1">
+    <turnGravityOff>false</turnGravityOff>
+    <self_collide>true</self_collide>
+  </gazebo>
+  
+  <gazebo reference="link_2">
+    <turnGravityOff>false</turnGravityOff>
+    <self_collide>true</self_collide>
+  </gazebo>
+  
+  <gazebo reference="link_3">
+    <turnGravityOff>false</turnGravityOff>
+    <self_collide>true</self_collide>
+  </gazebo>
+
+  <gazebo reference="link_4">
+    <turnGravityOff>false</turnGravityOff>
+    <self_collide>true</self_collide>
+  </gazebo>
+
+  <gazebo reference="link_5">
+    <turnGravityOff>false</turnGravityOff>
+    <self_collide>true</self_collide>
+  </gazebo>
+
+  <gazebo reference="link_6">
+    <turnGravityOff>false</turnGravityOff>
+    <self_collide>true</self_collide>
+  </gazebo>
+
+  <gazebo reference="gripper_root_link">
+    <turnGravityOff>false</turnGravityOff>
+    <self_collide>true</self_collide>
+  </gazebo>
+
+  <gazebo reference="gripper_root_link">
+    <turnGravityOff>false</turnGravityOff>
+    <self_collide>true</self_collide>
+  </gazebo>
+
+  <!-- camera -->
+<!--
+  <gazebo reference="camera_link">
+    <turnGravityOff>true</turnGravityOff>
+    <sensor type="camera" name="camera1">
+      <update_rate>30.0</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>800</width>
+          <height>800</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          !!!!!!!!!!!!Noise is sampled independently per pixel on each frame.
+               That pixel's noise value is added to each of its color
+               channels, which at that point lie in the range [0,1]. !!!!!!!!!!!!!1
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0.0</updateRate>
+        <cameraName>abb/camera1</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>camera_link</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+-->
+  <gazebo reference="kinect_link">
+    <turnGravityOff>true</turnGravityOff>
+<sensor name="camera_kinect" type="depth">
+        <update_rate>1</update_rate>
+        <camera>
+          <horizontal_fov>1.047198</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>3</far>
+          </clip>
+        </camera>
+<!--openni-->
+        <plugin name="camera_plugin" filename="libgazebo_ros_openni_kinect.so">
+          <baseline>0.2</baseline>
+          <alwaysOn>true</alwaysOn>
+          <!-- Keep this zero, update_rate in the parent <sensor> tag
+            will control the frame rate. -->
+          <updateRate>0.0</updateRate>
+          <cameraName>camera_ir</cameraName>
+          <imageTopicName>/camera/depth/image_rgb</imageTopicName>
+          <cameraInfoTopicName>/camera/depth/camera_info</cameraInfoTopicName>
+          <depthImageTopicName>/camera/depth/image_depth</depthImageTopicName>
+          <depthImageInfoTopicName>/camera/depth/depth_camera_info</depthImageInfoTopicName>
+          <pointCloudTopicName>/camera/depth/points</pointCloudTopicName>
+          <frameName>kinect_link</frameName>
+          <pointCloudCutoff>2.0</pointCloudCutoff>
+          <distortionK1>0</distortionK1>
+          <distortionK2>0</distortionK2>
+          <distortionK3>0</distortionK3>
+          <distortionT1>0</distortionT1>
+          <distortionT2>0</distortionT2>
+          <CxPrime>0</CxPrime>
+          <Cx>0</Cx>
+          <Cy>0</Cy>
+          <focalLength>0</focalLength>
+          <hackBaseline>0</hackBaseline>
+        </plugin>
+</sensor>
+  </gazebo>
+</robot>

@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/weiyizhang/grasp/robot/abb_ws/install/setup.sh

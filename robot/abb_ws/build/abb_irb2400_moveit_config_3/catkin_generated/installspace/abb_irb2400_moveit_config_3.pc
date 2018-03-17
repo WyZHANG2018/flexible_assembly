@@ -1,0 +1,8 @@
+prefix=/home/weiyizhang/grasp/robot/abb_ws/install
+
+Name: abb_irb2400_moveit_config_3
+Description: Description of abb_irb2400_moveit_config_3
+Version: 0.3.0
+Cflags: 
+Libs: -L/home/weiyizhang/grasp/robot/abb_ws/install/lib 
+Requires: 

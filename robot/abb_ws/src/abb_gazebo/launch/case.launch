@@ -1,0 +1,24 @@
+<launch>
+   
+  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
+  <arg name="debug" default="false"/>
+  <arg unless="$(arg debug)" name="launch_prefix" value="" />
+  <arg if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+
+  <!-- Load the URDF into the ROS Parameter Server -->
+  <param name="case_description" textfile="$(find abb_gazebo)/worlds/media/case.urdf" />
+
+  <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+  
+  <node name="urdf_spawner_case" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+    args="-urdf -file $(find abb_gazebo)/worlds/media/case.urdf -model case"/>
+
+  <param name="part_description" textfile="$(find abb_gazebo)/worlds/media/nut.urdf" />
+  <node name="nuts" pkg="abb_gazebo"  type="nuts" respawn="false" launch-prefix="$(arg launch_prefix)" output="screen"/>
+
+
+</launch>

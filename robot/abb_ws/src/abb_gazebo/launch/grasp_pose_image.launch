@@ -1,0 +1,19 @@
+<launch>
+   
+  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
+  <arg name="debug" default="false"/>
+  <arg unless="$(arg debug)" name="launch_prefix" value="" />
+  <arg if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+
+  <!-- Load the URDF into the ROS Parameter Server -->
+  <param name="part_description" textfile="$(find abb_gazebo)/worlds/media/nut.urdf" />
+
+ 
+<node name="grasp_pose" pkg="abb_gazebo"  type="grasp_pose" respawn="false" launch-prefix="$(arg launch_prefix)" output="screen"/>
+
+
+</launch>

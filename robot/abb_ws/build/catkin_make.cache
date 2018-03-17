@@ -1,0 +1,2 @@
+abb:abb_gazebo:abb_irb2400_moveit_config:abb_irb2400_moveit_config_2:abb_irb2400_moveit_config_3:abb_irb2400_moveit_plugins:abb_irb2400_support:abb_motion_test:abb_resources:robotiq_85_description
+-DCATKIN_DEVEL_PREFIX=/home/weiyizhang/grasp/robot/abb_ws/devel -DCMAKE_INSTALL_PREFIX=/home/weiyizhang/grasp/robot/abb_ws/install -G Unix Makefiles
