@@ -20,30 +20,28 @@
 
 #define PI 3.14159265359
 int image_num=0;
-
+cv::FileStorage file("/home/weiyizhang/grasp/robot/abb_ws/depth.xml", cv::FileStorage::WRITE);
 void imageCallback_depth(const sensor_msgs::Image::ConstPtr& msg)
 {
   cv_bridge::CvImagePtr cv_ptr;
   
-  //try
-   // {
+  try
+    {
       std::string e=msg->encoding;
       std::cout<<e<<std::endl;
       cv_ptr = cv_bridge::toCvCopy(msg, msg->encoding);
       std::cout<<cv_ptr->image.type()<<std::endl;
 
       cv::Mat img = cv_ptr->image;
-//float tmp=img.at<float>(55,55);
-//std::cout <<img;
 
-for(int i=0; i<img.rows; i++)
-    for(int j=0; j<img.cols; j++) 
-        if(!std::isnan(img.at<float>(i,j)))
-        std::cout <<img.at<float>(i,j)<<std::endl;
-/*  
-      if (cv::imwrite("/home/weiyizhang/grasp/robot/abb_ws/depth"+std::to_string(image_num)+".png",cv_ptr->image)){
-          ROS_INFO("depth image saved ");
-        }
+      // Write to file!
+      file<<"depthMat"+std::to_string(image_num)<<img;
+      //visualization
+      cv::Mat img_bw;
+      cv::threshold(img, img_bw, 0.0, 255.0, cv::THRESH_BINARY);
+      cv::imwrite("/home/weiyizhang/grasp/robot/abb_ws/depth"+std::to_string(image_num)+".jpg",img_bw);
+      ROS_INFO("depth mat saved ");
+	      
     }
     catch (cv_bridge::Exception& e)
     {
@@ -52,9 +50,7 @@ for(int i=0; i<img.rows; i++)
     }
 
   //ROS_INFO("the encoding of the image is: [%s]!!!!!!!!!!!!!!!!!", msg->encoding.data());
-*/
 }
-
 
 void imageCallback_rgb(const sensor_msgs::Image::ConstPtr& msg)
 {
@@ -85,7 +81,7 @@ int main(int argc, char** argv)
 ros::init(argc, argv, "nuts");
 ros::AsyncSpinner spinner(1);
 ros::NodeHandle node_handle;
-ros::WallDuration sleep_time(2.0);//minimal time ?
+ros::WallDuration sleep_time(3.0);//minimal time ?
 //spawn model
 ros::ServiceClient client_spawner = node_handle.serviceClient<gazebo_msgs::SpawnModel>("/gazebo/spawn_urdf_model");
 gazebo_msgs::SpawnModel srv_spawner;
@@ -100,14 +96,16 @@ gazebo_msgs::DeleteModel srv_delete;
 srv_delete.request.model_name="nut";
 //listen to image topic 
 ros::Subscriber sub_image_depth = node_handle.subscribe("/camera/depth/image_depth", 1, imageCallback_depth);
+//ros::Subscriber sub_camera_info_l = node_handle.subscribe("/multisense_sl/camera/left/camera_info", 1, imageCallback_camera_l);
 ros::Subscriber sub_image_rgb = node_handle.subscribe("/camera/depth/image_rgb", 1, imageCallback_rgb);
+ 
 
 //pose of camera in world frame
 Eigen::Matrix3f m_cam;
 m_cam(0,0)=-1.0;m_cam(0,1)=0.0;m_cam(0,2)=0.0;
 m_cam(1,0)=0.0;m_cam(1,1)=-1.0;m_cam(1,2)=0.0;
 m_cam(2,0)=0.0;m_cam(2,1)=0.0;m_cam(2,2)=1.0;
-float x_cam=1.50;
+float x_cam=1.00;
 float y_cam=0.0;
 float z_cam=1.35;
 //set initial pose
@@ -130,86 +128,81 @@ int num_range=5;
 float ratio;
 //iter over vertices
 for(it = vp.begin(); it != vp.end(); it++){
-p_tmp=*it;
-//axis X
-Xx_tmp=p_tmp.x;
-Xy_tmp=p_tmp.y;
-Xz_tmp=p_tmp.z;
-ratio=-1.0/sqrt(Xx_tmp*Xx_tmp+Xy_tmp*Xy_tmp+Xz_tmp*Xz_tmp);
-Xx_tmp*=ratio;
-Xy_tmp*=ratio;
-Xz_tmp*=ratio;
-//axis Y z=(0 0 1)^x=(x,y,z) 
-Yx_tmp=-Xy_tmp;
-Yy_tmp=Xx_tmp;
-Yz_tmp=0.0;
-//axis Z
-Zx_tmp=Xy_tmp*Yz_tmp-Yy_tmp*Xz_tmp;
-Zy_tmp=Xz_tmp*Yx_tmp-Yz_tmp-Xx_tmp;
-Zz_tmp=Xx_tmp*Yy_tmp-Yx_tmp*Xy_tmp;
-// rotation which represents the pose of the part frame in the camera frame
-m(0,0)=Xx_tmp;m(0,1)=Xy_tmp;m(0,2)=Xy_tmp;
-m(1,0)=Yx_tmp;m(1,1)=Yy_tmp;m(1,2)=Yy_tmp;
-m(2,0)=Zx_tmp;m(2,1)=Zy_tmp;m(2,2)=Zy_tmp;
-//pose of the part frame in the word frame
-m=m_cam*m;
-//convert to quaternion representation
-q=m;
-for (int num_t=0;num_t<=num_range;num_t++){
-x_t=0.56-x_range+2.0*x_range/num_range*num_t;
-y_t=0.0-y_range+2.0*y_range/num_range*num_t;
-z_t=1.35-z_range+2.0*z_range/num_range*num_t;
-for (int num_r=0;num_r<=23;num_r++){
-/*
-q_inplan.x=x_cam;
-q_inplan.y=y_cam;
-q_inplan.z=z_cam;
-q_inplan.w=2.0*PI*num_r/24.0;
-*/
-float semiangle=PI*(float)num_r/24.0;
-q_inplan=Eigen::Quaternionf(std::cos(semiangle),std::sin(semiangle),0.0,0.0);
-q_final=q_inplan*q;
+	p_tmp=*it;
+	//axis X
+	Xx_tmp=p_tmp.x;
+	Xy_tmp=p_tmp.y;
+	Xz_tmp=p_tmp.z;
+	ratio=-1.0/sqrt(Xx_tmp*Xx_tmp+Xy_tmp*Xy_tmp+Xz_tmp*Xz_tmp);
+	Xx_tmp*=ratio;
+	Xy_tmp*=ratio;
+	Xz_tmp*=ratio;
+	//axis Y z=(0 0 1)^x=(x,y,z) 
+	Yx_tmp=-Xy_tmp;
+	Yy_tmp=Xx_tmp;
+	Yz_tmp=0.0;
+	//axis Z
+	Zx_tmp=Xy_tmp*Yz_tmp-Yy_tmp*Xz_tmp;
+	Zy_tmp=Xz_tmp*Yx_tmp-Yz_tmp-Xx_tmp;
+	Zz_tmp=Xx_tmp*Yy_tmp-Yx_tmp*Xy_tmp;
+	// rotation which represents the pose of the part frame in the camera frame
+	m(0,0)=Xx_tmp;m(0,1)=Xy_tmp;m(0,2)=Xy_tmp;
+	m(1,0)=Yx_tmp;m(1,1)=Yy_tmp;m(1,2)=Yy_tmp;
+	m(2,0)=Zx_tmp;m(2,1)=Zy_tmp;m(2,2)=Zy_tmp;
+	//pose of the part frame in the word frame
+	m=m_cam*m;
+	//convert to quaternion representation
+	q=m;
+	for (int num_t=0;num_t<=num_range;num_t++){
+		x_t=0.56-x_range+2.0*x_range/num_range*num_t;
+		y_t=0.0-y_range+2.0*y_range/num_range*num_t;
+		z_t=1.35-z_range+2.0*z_range/num_range*num_t;
+		for (int num_r=0;num_r<=23;num_r++){
 
-//angle/2 in order to project 0~2PI into -1~1
+		float semiangle=PI*(float)num_r/24.0;
+		q_inplan=Eigen::Quaternionf(std::cos(semiangle),std::sin(semiangle),0.0,0.0);
+		q_final=q_inplan*q;
+
+		//angle/2 in order to project 0~2PI into -1~1
 
 
-pose_nut.orientation.x=q_final.x();
-pose_nut.orientation.y=q_final.y();
-pose_nut.orientation.z=q_final.z();
-pose_nut.orientation.w=q_final.w();
-pose_nut.position.x =x_t;
-pose_nut.position.y =y_t;
-pose_nut.position.z =z_t;
+		pose_nut.orientation.x=q_final.x();
+		pose_nut.orientation.y=q_final.y();
+		pose_nut.orientation.z=q_final.z();
+		pose_nut.orientation.w=q_final.w();
+		pose_nut.position.x =x_t;
+		pose_nut.position.y =y_t;
+		pose_nut.position.z =z_t;
 
-image_num++;
-//spawn model
-srv_spawner.request.initial_pose=pose_nut;
+		image_num++;
+		//spawn model
+		srv_spawner.request.initial_pose=pose_nut;
 
-if (client_spawner.call(srv_spawner))
-{
-ROS_INFO("Successfully to call service spawn_urdf_model");
-}
-else
-{
-ROS_ERROR("Failed to call service spawn_urdf_model");
-return 1;
-}
-spinner.start();
-sleep_time.sleep();
-spinner.stop();
-//take photo
-//delete model
-if (client_delete.call(srv_delete))
-{
-ROS_INFO("Successfully to call service delete_model");
-}
-else
-{
-ROS_ERROR("Failed to call service delete_model");
-return 1;
-}
-sleep_time.sleep();
-}
+		if (client_spawner.call(srv_spawner))
+		{
+		ROS_INFO("Successfully to call service spawn_urdf_model");
+		}
+		else
+		{
+		ROS_ERROR("Failed to call service spawn_urdf_model");
+		return 1;
+		}
+		spinner.start();
+		sleep_time.sleep();
+		spinner.stop();
+		//take photo
+		//delete model
+		if (client_delete.call(srv_delete))
+		{
+		ROS_INFO("Successfully to call service delete_model");
+		}
+		else
+		{
+		ROS_ERROR("Failed to call service delete_model");
+		return 1;
+		}
+		sleep_time.sleep();
+	}
 
 
 }
@@ -229,6 +222,6 @@ sleep_time.sleep();
 
 
 ROS_INFO("Done");
-
+file.release();
 return 0;
 }

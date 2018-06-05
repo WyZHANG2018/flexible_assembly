@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+
+<robot name="camera_stereo" xmlns:xacro="http://ros.org/wiki/xacro">
+	<xacro:include filename="$(find abb_irb2400_support)/urdf/camera_stereo_macro.xacro"/>
+	<xacro:camera_stereo prefix=""/>
+</robot>
